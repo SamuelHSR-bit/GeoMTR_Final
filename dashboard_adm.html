@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GeoMTR | Dashboard ADM</title>
+    <link rel="stylesheet" href="css/dashboard.css" />
+  </head>
+
+  <body data-perfil="admin">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <span>Geo</span>MTR
+        <small>GESTÃO DE ÁREAS DE MINERAÇÃO</small>
+      </div>
+
+      <nav>
+        <a href="dashboard_adm.html" class="nav-item ativo">
+          <span class="icone">🎛️</span>
+          Dashboard
+        </a>
+        <a href="setores-adm.html" class="nav-item">
+          <span class="icone">📍</span>
+          Setores
+        </a>
+        <a href="operacoes-adm.html" class="nav-item">
+          <span class="icone">⛏️</span>
+          Operações gerais
+        </a>
+        <a href="relatorios-gerais.html" class="nav-item">
+          <span class="icone">📊</span>
+          Relatórios gerais
+        </a>
+        <a href="funcionarios.html" class="nav-item admin-item">
+          <span class="icone">👤</span>
+          Funcionários
+        </a>
+      </nav>
+
+      <div class="suporte-sidebar">
+        <strong>Suporte</strong>
+        <p>Precisa de ajuda?</p>
+        <button onclick="abrirSuporte()">Contatar administrador</button>
+      </div>
+    </aside>
+
+    <div
+      class="sidebar-overlay"
+      id="sidebarOverlay"
+      onclick="toggleSidebar()"
+    ></div>
+
+    <main class="conteudo">
+      <header class="topbar">
+        <button
+          class="menu-btn"
+          id="menuBtn"
+          onclick="toggleSidebar()"
+          aria-label="Abrir menu"
+        >
+          ☰
+        </button>
+        <div class="header-identificacao">
+          <small>GESTÃO ADMINISTRATIVA</small>
+          <strong>Dashboard administrativo</strong>
+        </div>
+        <div class="topbar-direita">
+          <div class="status">
+            <span></span>
+            SISTEMA ONLINE
+          </div>
+
+          <button class="perfil-btn" onclick="togglePerfil()">
+            <div class="avatar">AD</div>
+          </button>
+
+          <div class="perfil-menu" id="perfilMenu">
+            <div class="perfil-cabecalho">
+              <div class="avatar grande">AD</div>
+              <div>
+                <strong>Administrador GeoMTR</strong>
+                <span>Administrador do sistema</span>
+              </div>
+            </div>
+            <hr />
+            <button type="button" onclick="abrirPerfil()">Meu perfil</button>
+            <hr />
+            <button class="sair" onclick="sairSistema()">
+              ↪ Sair do sistema
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <section class="boas-vindas">
+        <div>
+          <p class="mini-titulo">PAINEL OPERACIONAL</p>
+          <h1>Olá, Administrador.</h1>
+          <p>Acompanhe as áreas, operações e avaliações técnicas da GeoMTR.</p>
+        </div>
+
+        <div class="data-atual">
+          <small>DATA DO SISTEMA</small>
+          <strong id="dataAtual"></strong>
+        </div>
+      </section>
+
+      <section class="cards">
+        <button
+          class="card"
+          onclick="
+            abrirModal(
+              'Área Total',
+              'A GeoMTR possui atualmente 9,20 km² de áreas cadastradas para pesquisa e exploração mineral.',
+            )
+          "
+        >
+          <span class="card-titulo">Área total</span>
+          <strong id="areaTotalDashboard">9,20 km²</strong>
+          <small>100% das áreas cadastradas</small>
+        </button>
+
+        <button
+          class="card"
+          onclick="
+            abrirModal(
+              'Área Minerada',
+              'Até o momento, aproximadamente 5,40 km² (58,7%) da área total têm percentual de exploração registrado.',
+            )
+          "
+        >
+          <span class="card-titulo">Área minerada</span>
+          <strong id="areaExploradaDashboard">5,40 km²</strong>
+          <small id="areaExploradaPercentDashboard">58,7% da área total</small>
+        </button>
+
+        <button
+          class="card"
+          onclick="
+            abrirModal(
+              'Em Operação',
+              'Existe 1 operação em andamento entre os 3 registros de operação do protótipo.',
+            )
+          "
+        >
+          <span class="card-titulo">Em operação</span>
+          <strong id="operacoesAtivasDashboard">1 operação</strong>
+          <small id="operacoesAtivasSubDashboard">1 de 3 registros</small>
+        </button>
+
+        <button
+          class="card"
+          onclick="
+            abrirModal(
+              'Área Restante',
+              'A área não explorada estimada é de aproximadamente 3,80 km² (41,3% do total).',
+            )
+          "
+        >
+          <span class="card-titulo">Área restante</span>
+          <strong id="areaRestanteDashboard">3,80 km²</strong>
+          <small id="areaRestantePercentDashboard">41,3% da área total</small>
+        </button>
+      </section>
+
+      <section class="grid-principal">
+        <article class="painel mapa-painel" id="mapaPainel">
+          <div class="painel-header">
+            <div>
+              <h2>Mapa de Setores</h2>
+              <p>
+                Situação atual das áreas monitoradas. Selecione um setor para
+                consultar os detalhes.
+              </p>
+            </div>
+            <button
+                class="botao-principal"
+                type="button"
+                onclick="expandirMapa()"
+              >
+                ⛶ Expandir mapa
+              </button>
+              
+            </button>
+          </div>
+
+          <div class="mapa" id="mapaSetoresViewport">
+            <div class="grade-mapa"></div>
+            <button
+              class="setor setor-verde setor-1"
+              type="button"
+              onclick="detalheSetor('ST-01')"
+              aria-label="Consultar setor ST-01"
+            >
+              ST-01
+            </button>
+            <button
+              class="setor setor-azul setor-2"
+              type="button"
+              onclick="detalheSetor('ST-02')"
+              aria-label="Consultar setor ST-02"
+            >
+              ST-02
+            </button>
+            <button
+              class="setor setor-laranja setor-3"
+              type="button"
+              onclick="detalheSetor('ST-03')"
+              aria-label="Consultar setor ST-03"
+            >
+              ST-03
+            </button>
+            <button
+              class="setor setor-vermelho setor-4"
+              type="button"
+              onclick="detalheSetor('ST-04')"
+              aria-label="Consultar setor ST-04"
+            >
+              ST-04
+            </button>
+            <button
+              class="setor setor-cinza setor-5"
+              type="button"
+              onclick="detalheSetor('ST-05')"
+              aria-label="Consultar setor ST-05"
+            >
+              ST-05
+            </button>
+
+            <div class="legenda">
+              <div><span class="verde"></span>Mariana</div>
+              <div><span class="azul"></span>Serra Azul</div>
+              <div><span class="laranja"></span>Vale Central</div>
+              <div><span class="vermelho"></span>Campo Sul</div>
+              <div><span class="cinza"></span>Serra Norte</div>
+            </div>
+          </div>
+        </article>
+
+        <aside class="painel resumo">
+          <div class="painel-header">
+            <div>
+              <h2>Meu mês</h2>
+              <p>Novembro / 2026</p>
+            </div>
+          </div>
+
+          <button
+            class="resumo-item"
+            onclick="
+              abrirModal(
+                'Minhas avaliações',
+                'Você possui 1 relatório técnico registrado neste protótipo, vinculado ao setor ST-01.',
+              )
+            "
+          >
+            <span>Avaliações realizadas</span>
+            <strong id="relatoriosResumoValor">1</strong>
+            <small id="relatoriosResumoDetalhe">1 relatório registrado</small>
+          </button>
+
+          <button
+            class="resumo-item"
+            onclick="
+              abrirModal(
+                'Setores avaliados',
+                'Há 1 setor com relatório vinculado: ST-01.',
+              )
+            "
+          >
+            <span>Setores avaliados</span>
+            <strong id="setoresResumoValor">1</strong>
+            <small id="setoresResumoDetalhe">de 5 setores cadastrados</small>
+          </button>
+
+          <button
+            class="resumo-item"
+            onclick="verRelatorio('REL-0001')"
+          >
+            <span>Último relatório</span>
+            <strong id="ultimaAvaliacaoValor">13/11</strong>
+            <small id="ultimaAvaliacaoDetalhe">REL-0001 • ST-01</small>
+          </button>
+        </aside>
+      </section>
+
+      <section class="grid-inferior">
+        <article class="painel">
+          <div class="painel-header">
+            <div>
+              <h2>Últimos Relatórios</h2>
+              <p>Atividades técnicas recentes.</p>
+            </div>
+
+            <a href="relatorios-gerais.html" class="link-btn">Ver todas →</a>
+          </div>
+
+          <div class="tabela-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Data</th>
+                  <th>Setor</th>
+                  <th>Tipo</th>
+                  <th>Responsável</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+
+              <tbody id="ultimosRelatoriosDashboard"></tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="painel distribuicao">
+          <div class="painel-header">
+            <div>
+              <h2>Distribuição dos Setores</h2>
+              <p>Classificação por nível de exploração.</p>
+            </div>
+          </div>
+
+          <div class="grafico-area">
+            <div class="grafico">
+              <div class="grafico-centro">
+                <strong>5</strong>
+                <span>Setores</span>
+              </div>
+            </div>
+
+            <div class="grafico-legenda">
+              <p><span class="verde"></span>Favorável<strong>2</strong></p>
+              <p><span class="azul"></span>Baixa atividade<strong>1</strong></p>
+              <p><span class="laranja"></span>Atenção moderada<strong>1</strong></p>
+              <p><span class="vermelho"></span>Atenção elevada<strong>1</strong></p>
+              <p><span class="cinza"></span>Em análise<strong>0</strong></p>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <footer>
+        <div class="footer-logo">
+          <strong>Geo<span>MTR</span></strong>
+          <small>Gestão de Áreas de Mineração</small>
+        </div>
+        <div>
+          <p>© 2026 GeoMTR. Todos os direitos reservados.</p>
+          <small>Versão 0.9A.P • Ac</small>
+        </div>
+        <div class="footer-links">
+          <button type="button" data-legal="privacy">
+            Política de Privacidade
+          </button>
+          <button type="button" data-legal="terms">Termos de Uso</button>
+          <button type="button" onclick="abrirSuporte()">Suporte</button>
+        </div>
+        <div class="endereco">
+          <strong>Sede Administrativa</strong>
+          <p>
+            Av. dos Minerais, 1000<br />Distrito Industrial<br />Nova Esperança
+            - MG
+          </p>
+        </div>
+      </footer>
+    </main>
+
+    <div
+      class="modal-overlay"
+      id="modalOverlay"
+      onclick="fecharModalFundo(event)"
+    >
+      <div class="modal">
+        <button class="modal-fechar" onclick="fecharModal()">×</button>
+        <p class="mini-titulo">GEOMTR</p>
+        <h2 id="modalTitulo">Informações</h2>
+        <div id="modalConteudo"></div>
+      </div>
+    </div>
+
+    <script src="js/dados.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/setores.js"></script>
+    <script src="js/relatorios.js"></script>
+
+    <!-- VLibras: recurso de acessibilidade em Libras -->
+    <div vw class="enabled">
+      <div vw-access-button class="active"></div>
+      <div vw-plugin-wrapper><div class="vw-plugin-top-wrapper"></div></div>
+    </div>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+      new window.VLibras.Widget("https://vlibras.gov.br/app");
+    </script>
+
+    <div class="legal-overlay" id="legalOverlay" hidden>
+      <section
+        class="legal-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="legalTitle"
+      >
+        <button
+          type="button"
+          class="legal-close"
+          id="legalClose"
+          aria-label="Fechar"
+        >
+          ×
+        </button>
+        <div class="legal-eyebrow">GEOMTR • DOCUMENTOS DO SISTEMA</div>
+        <h2 id="legalTitle">Política de Privacidade</h2>
+        <p class="legal-updated">Versão demonstrativa • Novembro de 2026</p>
+        <div class="legal-content" id="legalContent"></div>
+        <div class="legal-actions">
+          <button type="button" id="legalCloseBottom">Entendi</button>
+        </div>
+      </section>
+    </div>
+    <script src="js/legal.js"></script>
+  </body>
+</html>

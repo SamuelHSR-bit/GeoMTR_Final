@@ -1,0 +1,86 @@
+================================================================================
+GEOMTR - GESTÃO INTELIGENTE DE OPERAÇÕES MINERAIS
+Projeto Integrado Multidisciplinar (PIM II)
+Curso Superior de Tecnologia em Análise e Desenvolvimento de Sistemas
+Universidade Paulista (UNIP) - Turma DS1P33 | Sala 420
+Autor: Samuel Henrique de Sousa Rodrigues (RA: R428176)
+Orientador: Prof. MSc. Claudio Scheidt Guimarães
+Ano: 2026
+================================================================================
+
+1. VISÃO GERAL DO PROJETO
+O GeoMTR é um protótipo de sistema web desenvolvido para fins acadêmicos,
+proposto para apoiar a organização fictícia GeoMTR Gestão Mineral na gestão
+administrativa e no acompanhamento técnico-operacional de setores, operações,
+empresas associadas e relatórios técnicos.
+
+Nota de escopo: Os dados apresentados no protótipo (setores, operações,
+usuários, empresas, indicadores e mapa esquemático) são exclusivamente
+fictícios e demonstrativos, não substituindo laudos técnicos, licenciamentos
+ambientais ou registros oficiais junto aos órgãos competentes.
+
+--------------------------------------------------------------------------------
+2. ESTRUTURA DO PACOTE
+--------------------------------------------------------------------------------
+
+GeoMTR/
+├── Arquivos DB/                         # Scripts SQL do banco de dados MySQL
+│   ├── 01_BANCO_BASE.sql                # Criação do schema 'geomtr' e tabelas
+│   ├── MIGRACAO_SETORES.sql             # Complemento de colunas e setores ST-01 a ST-05
+│   ├── SEED_DEMO.sql                    # Carga inicial de usuários, empresas, operações e relatório
+│   └── GeoMTR_banco_mysql (1).sql       # Backup/espelho da estrutura base
+│
+├── Documentação+banner+fotos/           # Entregáveis acadêmicos e evidências
+│   ├── Documentação/                    # Monografia completa em formato ABNT (.pdf e .docx)
+│   ├── banner/                          # Banner de apresentação do projeto (.pdf)
+│   └── fotos/                           # Figuras, diagramas, fluxogramas e capturas de tela
+│
+└── Site.....Prot/                       # Código-fonte do protótipo web e esqueleto backend
+    ├── index.html                       # Tela de acesso (login demonstrativo por perfil)
+    ├── dashboard.html                   # Painel principal - Visão Operacional (Funcionário)
+    ├── dashboard_adm.html               # Painel principal - Visão Administrativa
+    ├── setores.html                     # Consulta e mapa esquemático de setores (Operacional)
+    ├── setores-adm.html                 # Gestão e manutenção de setores (Administrativo)
+    ├── operacoes.html                   # Consulta de operações minerais (Operacional)
+    ├── operacoes-adm.html               # Gestão de operações minerais (Administrativo)
+    ├── relatorios.html                  # Consulta e criação de relatórios (Operacional)
+    ├── relatorios-gerais.html           # Relatórios gerais e exportação CSV (Administrativo)
+    ├── funcionarios.html                # Diretório e gestão de usuários (Administrativo)
+    ├── css/                             # Folhas de estilo modulares e responsivas
+    ├── js/                              # Lógica de apresentação, filtros, cálculos e dados mock
+    ├── backend/                         # Estrutura inicial de servidor Node.js/Express (server.js)
+    ├── package.json                     # Dependências do ambiente Node.js
+    └── .env.example                     # Modelo de variáveis de ambiente
+
+--------------------------------------------------------------------------------
+3. COMO EXECUTAR O PROTÓTIPO WEB (FRONTEND)
+--------------------------------------------------------------------------------
+1. Acesse a pasta do site (Site.....Prot/).
+2. Abra o arquivo "index.html" diretamente em qualquer navegador moderno
+   (Chrome, Edge, Firefox) ou utilize uma extensão como o Live Server (VS Code).
+3. Na tela de login demonstrativo, selecione o perfil desejado para navegar
+   entre a Visão Operacional (Funcionário/Geólogo) e a Visão Administrativa.
+
+Estado atual da persistência:
+- Os dados iniciais são carregados a partir de "js/dados.js".
+- Novos relatórios cadastrados são salvos localmente no navegador via
+  "localStorage".
+- Cadastros e edições em setores, operações e funcionários operam em
+  memória durante a sessão demonstrativa.
+
+--------------------------------------------------------------------------------
+4. COMO EXECUTAR OS SCRIPTS DO BANCO DE DADOS (MYSQL 8.0+)
+--------------------------------------------------------------------------------
+O banco relacional foi modelado de forma independente e pode ser executado em
+qualquer instância MySQL 8.0 ou superior (via MySQL Workbench ou terminal),
+respeitando a seguinte ordem de execução:
+
+  1º) Arquivos DB/01_BANCO_BASE.sql
+  2º) Arquivos DB/MIGRACAO_SETORES.sql
+  3º) Arquivos DB/SEED_DEMO.sql
+
+Observação: Na versão atual do protótipo, o arquivo "backend/server.js"
+contém a configuração inicial de conexão com o MySQL e uma rota de teste,
+estando a integração completa via API REST planejada para a próxima etapa.
+
+================================================================================
